@@ -77,9 +77,11 @@ public class ProductService {
         entity.setDescription(dto.getDescription());
         entity.setPrice(dto.getPrice());
         entity.setImgUrl(dto.getImgUrl());
+        //antes de inserir no postman vc tem que limpar a lista pq se tiver categorias insere mais uma
+        entity.getCategories().clear();
         for(CategoryDTO catDTO : dto.getCategories()) {
         	Category cat = new Category();
-        	cat.setId(dto.getId());
+        	cat.setId(catDTO.getId());
         	entity.getCategories().add(cat);
         }
     }
