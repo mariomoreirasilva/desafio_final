@@ -3,6 +3,7 @@ package com.devsuperior.dscommerce.services;
 import java.time.Instant;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.server.authorization.util.SpringAuthorizationServerVersion;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,11 +34,16 @@ public class OrderService {
 	 @Autowired
 	 private OrderItemRepository orderItemRepository;
 	 
+	 @Autowired
+	 private AuthService autService;
+	 
 	 
 	 @Transactional(readOnly = true)
 	    public OrderDTO findById(Long id) {
 	        Order order = repository.findById(id).orElseThrow(
 	                () -> new ResourceNotFoundException("Recurso não encontrado"));
+	        //testar se é admin ou se é o mesmo usuário do pedido. Se não for ja lança a excessão do AuthService e corta o programa.
+	        autService.validateSelfOrAdmin(order.getClient().getId());
 	        return new OrderDTO(order);
 	    }
 

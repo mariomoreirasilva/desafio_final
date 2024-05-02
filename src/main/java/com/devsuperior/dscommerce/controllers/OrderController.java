@@ -26,7 +26,8 @@ public class OrderController {
     private OrderService service;
 
     @GetMapping(value = "/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
+    //qualquer role acessa os pedidos, mas iremos controlar pelo método abaixo implementado no service
     public ResponseEntity<OrderDTO> findById(@PathVariable Long id) {
         OrderDTO dto = service.findById(id);
         return ResponseEntity.ok(dto);
